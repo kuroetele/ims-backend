@@ -1,9 +1,9 @@
 package com.kuro.ims.service;
 
 import com.kuro.ims.entity.Customer;
+import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.CustomerRepository;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class CustomerService
 
     public Customer getCustomer(Long id)
     {
-        return customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("customer not found"));
+        return customerRepository.findById(id).orElseThrow(() -> new ImsClientException("customer not found"));
     }
 
 
@@ -38,4 +38,11 @@ public class CustomerService
     {
         return customerRepository.findAll();
     }
+
+
+    public Long getCustomerCount()
+    {
+        return customerRepository.count();
+    }
 }
+

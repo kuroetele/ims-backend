@@ -3,6 +3,7 @@ package com.kuro.ims.entity;
 import com.kuro.ims.type.PaymentType;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,13 +16,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@Table(name = "order")
+@Table(name = "orders")
 public class Order extends AuditableEntity
 {
     @ManyToOne
     private Customer customer;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts;
 
     private BigDecimal netAmount;

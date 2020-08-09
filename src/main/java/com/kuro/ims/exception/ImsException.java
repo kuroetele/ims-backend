@@ -6,4 +6,10 @@ public class ImsException extends RuntimeException
     {
         super(message);
     }
+
+
+    public ImsException(String message, Throwable e)
+    {
+        super(message, e);
+    }
 }

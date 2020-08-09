@@ -24,7 +24,7 @@ public class Product extends AuditableEntity
     private Category category;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long categoryId;
 
     private Long availableQuantity;
@@ -36,6 +36,7 @@ public class Product extends AuditableEntity
     @Column(unique = true)
     private String serialNumber;
 
+    @Column(columnDefinition = "boolean default true")
     private boolean enabled;
 
     private Long minQuantity;

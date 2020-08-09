@@ -2,11 +2,12 @@ package com.kuro.ims.service;
 
 import com.kuro.ims.entity.Category;
 import com.kuro.ims.entity.Product;
+import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.ProductRepository;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class ProductService
 
     public Product getProduct(Long id)
     {
-        return productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("product not found"));
+        return productRepository.findById(id).orElseThrow(() -> new ImsClientException("product not found"));
     }
 
 
@@ -46,10 +47,24 @@ public class ProductService
     }
 
 
+    @Transactional
+    public void vendProduct(Product product, Integer count)
+    {
+        product.setAvailableQuantity(product.getAvailableQuantity() - count);
+        productRepository.save(product);
+    }
+
+
     public void disableProduct(Long id)
     {
         Product product = this.getProduct(id);
         product.setEnabled(false);
         productRepository.save(product);
+    }
+
+
+    public Long getProductCount()
+    {
+        return this.productRepository.count();
     }
 }

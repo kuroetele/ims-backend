@@ -1,9 +1,9 @@
 package com.kuro.ims.service;
 
 import com.kuro.ims.entity.Category;
+import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.CategoryRepository;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class CategoryService
 
     public Category getCategory(Long id)
     {
-        return categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("category not found"));
+        return categoryRepository.findById(id).orElseThrow(() -> new ImsClientException("category not found"));
     }
 
 
@@ -45,5 +45,11 @@ public class CategoryService
     public List<Category> getCategories()
     {
         return categoryRepository.findAll();
+    }
+
+
+    public Long getCategoryCount()
+    {
+        return categoryRepository.count();
     }
 }

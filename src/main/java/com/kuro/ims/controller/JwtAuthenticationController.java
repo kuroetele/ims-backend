@@ -3,6 +3,7 @@ package com.kuro.ims.controller;
 import com.kuro.ims.config.security.JwtRequest;
 import com.kuro.ims.config.security.JwtResponse;
 import com.kuro.ims.config.security.JwtTokenUtil;
+import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.service.JwtUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,11 +51,11 @@ public class JwtAuthenticationController
         }
         catch (DisabledException e)
         {
-            throw new Exception("USER_DISABLED", e);
+            throw new ImsClientException("User's account has been disabled", e);
         }
         catch (BadCredentialsException e)
         {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new ImsClientException("Invalid username or password", e);
         }
     }
 }

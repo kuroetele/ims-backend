@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .headers().frameOptions().sameOrigin()
             .and()
             .authorizeRequests()
-            .antMatchers("**/h2-**", "h2**", "/h2**").permitAll()
+            .antMatchers("/h2-console", "/h2-console/**").permitAll()
             .antMatchers("/authenticate").permitAll()
             .anyRequest().authenticated()
             .and()
