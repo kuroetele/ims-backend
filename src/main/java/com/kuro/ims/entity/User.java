@@ -1,8 +1,11 @@
 package com.kuro.ims.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kuro.ims.type.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,9 +30,13 @@ public class User extends AuditableEntity
 
     private String image;
 
+    @Column(unique = true)
     private String email;
 
     @Column(columnDefinition = "boolean default true")
     private boolean enabled;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

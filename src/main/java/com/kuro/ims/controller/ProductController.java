@@ -5,6 +5,7 @@ import com.kuro.ims.entity.Product;
 import com.kuro.ims.service.ProductService;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class ProductController
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public void createProduct(@RequestBody Product product)
     {
@@ -47,6 +49,7 @@ public class ProductController
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public void updateProduct(@PathVariable Long id, @RequestBody Product product)
     {
@@ -54,6 +57,7 @@ public class ProductController
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void disableProduct(@PathVariable Long id)
     {

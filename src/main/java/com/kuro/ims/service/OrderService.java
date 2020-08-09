@@ -27,8 +27,7 @@ public class OrderService
     private final ProductService productService;
 
     @Value("${order.vatPercentage: 5}")
-    private Double vatPercentage;
-
+    private static final Double vatPercentage = null;
 
     @Transactional
     public void createOrder(OrderDto orderDto)

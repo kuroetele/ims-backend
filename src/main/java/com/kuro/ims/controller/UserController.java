@@ -6,6 +6,7 @@ import com.kuro.ims.entity.User;
 import com.kuro.ims.service.UserService;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,7 @@ public class UserController
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public void createUser(@RequestBody User user)
     {

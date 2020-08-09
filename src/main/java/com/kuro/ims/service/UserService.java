@@ -1,6 +1,7 @@
 package com.kuro.ims.service;
 
 import com.kuro.ims.entity.User;
+import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.UserRepository;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
@@ -28,6 +29,11 @@ public class UserService
 
     public void createUser(User user)
     {
+        userRepository.findByEmail(user.getEmail())
+            .ifPresent(u -> {
+                throw new ImsClientException("A user with the specified email already exist");
+            });
 
+        userRepository.save(user);
     }
 }

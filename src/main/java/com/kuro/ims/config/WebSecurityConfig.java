@@ -65,7 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .csrf().disable()
             .headers().frameOptions().sameOrigin()
             .and()
-            //.addFilter(new JwtAuthenticationFilter(this.authenticationManager(), jwtTokenUtil))
             .authorizeRequests()
             .antMatchers("**/h2-**", "h2**", "/h2**").permitAll()
             .antMatchers("/authenticate").permitAll()
