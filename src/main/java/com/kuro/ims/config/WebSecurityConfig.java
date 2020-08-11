@@ -1,7 +1,8 @@
 package com.kuro.ims.config;
 
 import com.kuro.ims.config.security.JwtRequestFilter;
-import com.kuro.ims.config.security.JwtTokenUtil;
+import java.util.Arrays;
+import java.util.Collections;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,9 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 
     private final JwtRequestFilter jwtRequestFilter;
 
-    private final JwtTokenUtil jwtTokenUtil;
-
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception
     {
@@ -63,11 +61,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
         httpSecurity
             .csrf().disable()
+            .cors()
+            .and()
             .headers().frameOptions().sameOrigin()
             .and()
             .authorizeRequests()
             .antMatchers("/h2-console", "/h2-console/**").permitAll()
-            .antMatchers("/authenticate").permitAll()
+            .antMatchers("/api/settings/default").permitAll()
+            .antMatchers("/api/authenticate","/api/user-login").permitAll()
             .anyRequest().authenticated()
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -79,11 +80,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     }
 
 
+
     @Bean
-    public CorsConfigurationSource corsConfigurationSource()
-    {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(Collections.singletonList("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }
