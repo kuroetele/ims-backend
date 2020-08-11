@@ -1,26 +1,28 @@
 package com.kuro.ims.controller;
 
+import com.kuro.ims.config.security.CustomUserDetails;
 import com.kuro.ims.config.security.JwtRequest;
 import com.kuro.ims.config.security.JwtResponse;
 import com.kuro.ims.config.security.JwtTokenUtil;
+import com.kuro.ims.dto.UpdatePasswordDto;
 import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.service.JwtUserDetailsService;
+import com.kuro.ims.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 @AllArgsConstructor
-public class JwtAuthenticationController
+public class AuthenticationController
 {
 
     private AuthenticationManager authenticationManager;
@@ -29,8 +31,10 @@ public class JwtAuthenticationController
 
     private JwtUserDetailsService userDetailsService;
 
+    private UserService userService;
 
-    @PostMapping(value = "/authenticate")
+
+    @PostMapping(value = {"/api/authenticate","/api/user-login"})
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception
     {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -40,6 +44,11 @@ public class JwtAuthenticationController
 
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+    @PostMapping("/api/update-password")
+    public void updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto, Authentication authentication){
+        userService.updatePassword(((CustomUserDetails) authentication.getPrincipal()).getId(), updatePasswordDto);
     }
 
 
