@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,6 +29,24 @@ public class ProductController
     {
         return Response.<List<Product>>builder()
             .data(productService.getProducts())
+            .build();
+    }
+
+
+    @GetMapping("/low-stock")
+    public Response<List<Product>> getLowStockProducts(@RequestParam(defaultValue = "5") int size)
+    {
+        return Response.<List<Product>>builder()
+            .data(productService.getFirst5ProductsRunningLow(size))
+            .build();
+    }
+
+
+    @GetMapping("/categories/{categoryId}")
+    public Response<List<Product>> getProductsByCategory(@PathVariable Long categoryId)
+    {
+        return Response.<List<Product>>builder()
+            .data(productService.getProductsByCategory(categoryId))
             .build();
     }
 
@@ -63,7 +82,6 @@ public class ProductController
     {
         productService.disableProduct(id);
     }
-
 
 
 }

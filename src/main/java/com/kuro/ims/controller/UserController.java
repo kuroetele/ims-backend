@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,16 @@ public class UserController
     {
         return Response.<List<User>>builder()
             .data(userService.getUsers())
+            .build();
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{id]")
+    public Response<User> getUser(@PathVariable Long id)
+    {
+        return Response.<User>builder()
+            .data(userService.getUser(id))
             .build();
     }
 

@@ -6,6 +6,7 @@ import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.ProductRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,12 @@ public class ProductService
     public List<Product> getProducts()
     {
         return productRepository.findAll();
+    }
+
+
+    public List<Product> getProductsByCategory(Long categoryId)
+    {
+        return productRepository.findByCategory_Id(categoryId);
     }
 
 
@@ -66,5 +73,11 @@ public class ProductService
     public Long getProductCount()
     {
         return this.productRepository.count();
+    }
+
+
+    public List<Product> getFirst5ProductsRunningLow(int size)
+    {
+        return productRepository.findProductsWithLowStock(PageRequest.of(0, size));
     }
 }
