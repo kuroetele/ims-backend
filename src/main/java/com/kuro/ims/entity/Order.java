@@ -36,4 +36,8 @@ public class Order extends AuditableEntity
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
+    private String currency;
+
+    private String invoiceNumber;
+
 }

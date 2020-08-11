@@ -5,16 +5,22 @@ import com.kuro.ims.entity.Customer;
 import com.kuro.ims.entity.Order;
 import com.kuro.ims.entity.OrderProduct;
 import com.kuro.ims.entity.Product;
+import com.kuro.ims.entity.Setting;
 import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.exception.OrderCreationException;
 import com.kuro.ims.repository.OrderRepository;
+import com.kuro.ims.util.FilterUtil;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +33,9 @@ public class OrderService
     private final CustomerService customerService;
 
     private final ProductService productService;
+
+    private final SettingService settingService;
+
 
     @Transactional
     public void createOrder(OrderDto orderDto)
@@ -62,18 +71,28 @@ public class OrderService
             .map(OrderProduct::getTotalPrice)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        Setting storeSetting = settingService.getStoreSetting();
+
+        order.setVatPercentage(storeSetting.getVatPercentage());
+        order.setCurrency(storeSetting.getCurrency());
+
         order.setOrderProducts(orderProducts);
         order.setNetAmount(netAmount);
-        order.setGrossAmount(netAmount.add(netAmount.multiply(BigDecimal.valueOf(5D))));
+        order.setGrossAmount(netAmount.add(netAmount.multiply(BigDecimal.valueOf(storeSetting.getVatPercentage()))));
         order.setPaymentType(orderDto.getPaymentType());
         order.setDiscountPercentage(orderDto.getDiscountPercentage());
+        order.setInvoiceNumber(String.valueOf(System.currentTimeMillis()));
         orderRepository.save(order);
     }
 
 
-    public List<Order> getOrders()
+    public List<Order> getOrders(LocalDate startDate, LocalDate endDate)
     {
-        return orderRepository.findAll();
+        Specification<Order> specification =
+            Specification
+                .where(FilterUtil.buildCreatedAtFilter(startDate, endDate));
+
+        return orderRepository.findAll(specification, Pageable.unpaged()).getContent();
     }
 
 
@@ -95,6 +114,12 @@ public class OrderService
     }
 
 
+    public List<Map<BigDecimal, String>> getYearlySalesSum()
+    {
+        return this.orderRepository.findYearlySalesSum();
+    }
+
+
     public BigDecimal getMonthlyOrderSum()
     {
         LocalDateTime firstDayOfTheMonth = LocalDateTime.now()
@@ -109,4 +134,6 @@ public class OrderService
 
         return this.orderRepository.totalSumBetween(firstDayOfTheMonth, lastDayOfTheMonth).orElse(BigDecimal.ZERO);
     }
+
+
 }
