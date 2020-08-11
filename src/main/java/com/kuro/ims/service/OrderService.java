@@ -67,18 +67,21 @@ public class OrderService
             orderProducts.add(orderProduct);
         });
 
+        Setting storeSetting = settingService.getStoreSetting();
+
         BigDecimal netAmount = orderProducts.stream()
             .map(OrderProduct::getTotalPrice)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        Setting storeSetting = settingService.getStoreSetting();
+        BigDecimal grossAmount = netAmount.add(netAmount.multiply(BigDecimal.valueOf(storeSetting.getVatPercentage() / 100)));
+        grossAmount = grossAmount.subtract(grossAmount.multiply(BigDecimal.valueOf(orderDto.getDiscountPercentage() / 100)));
 
         order.setVatPercentage(storeSetting.getVatPercentage());
         order.setCurrency(storeSetting.getCurrency());
 
         order.setOrderProducts(orderProducts);
         order.setNetAmount(netAmount);
-        order.setGrossAmount(netAmount.add(netAmount.multiply(BigDecimal.valueOf(storeSetting.getVatPercentage()))));
+        order.setGrossAmount(grossAmount);
         order.setPaymentType(orderDto.getPaymentType());
         order.setDiscountPercentage(orderDto.getDiscountPercentage());
         order.setInvoiceNumber(String.valueOf(System.currentTimeMillis()));

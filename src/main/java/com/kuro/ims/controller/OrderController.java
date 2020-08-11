@@ -4,6 +4,7 @@ import com.kuro.ims.dto.OrderDto;
 import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Order;
 import com.kuro.ims.service.OrderService;
+import com.kuro.ims.type.PaymentType;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -65,6 +66,15 @@ public class OrderController
     {
         return Response.<List<?>>builder()
             .data(orderService.getYearlySalesSum())
+            .build();
+    }
+
+
+    @GetMapping("/payment-types")
+    public Response<?> getPaymentTypes()
+    {
+        return Response.<PaymentType[]>builder()
+            .data(PaymentType.values())
             .build();
     }
 
