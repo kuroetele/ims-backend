@@ -33,4 +33,6 @@ public class Menu extends AuditableEntity
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(columnDefinition = "boolean default true")
+    private boolean isVisible;
 }

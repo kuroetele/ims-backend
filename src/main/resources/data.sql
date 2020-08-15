@@ -42,4 +42,6 @@ values
 ('Product','product', 4, 2, 'ADMIN', true),
 ('New Sales','sales', 5, 1, 'USER', true),
 ('Sale History','sales-history', 5, 2, 'USER', true),
-('Sale Report','sales-report', 6, 2, 'USER', true);
+('Sale Invoice Details','sales-invoice-details', 5, 2, 'USER', false),
+('Sale Report','sales-report', 6, 2, 'USER', true),
+('Profile-Settings','profile-settings', 7, 2, 'USER', false);
