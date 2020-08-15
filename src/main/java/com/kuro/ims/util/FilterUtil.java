@@ -18,4 +18,16 @@ public class FilterUtil
             return null;
         };
     }
+
+
+    public static <T> Specification<T> buildCreatedByFilter(Long userId)
+    {
+        return (root, criteriaQuery, criteriaBuilder) -> {
+            if (userId != null)
+            {
+                return criteriaBuilder.equal(root.get("createdBy"), userId);
+            }
+            return null;
+        };
+    }
 }

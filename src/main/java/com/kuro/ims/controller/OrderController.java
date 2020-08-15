@@ -1,14 +1,18 @@
 package com.kuro.ims.controller;
 
+import com.kuro.ims.config.security.CustomUserDetails;
 import com.kuro.ims.dto.OrderDto;
 import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Order;
+import com.kuro.ims.entity.User;
 import com.kuro.ims.service.OrderService;
 import com.kuro.ims.type.PaymentType;
+import com.kuro.ims.type.Role;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,10 +39,12 @@ public class OrderController
     @GetMapping
     public Response<List<Order>> getOrders(
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate)
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+        Authentication authentication)
     {
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         return Response.<List<Order>>builder()
-            .data(orderService.getOrders(startDate, endDate))
+            .data(orderService.getOrders(startDate, endDate, user.getRole() == Role.USER ? user.getId() : null))
             .build();
     }
 
@@ -62,10 +68,11 @@ public class OrderController
 
 
     @GetMapping("/yearly-sum")
-    public Response<?> getYearlySum()
+    public Response<?> getYearlySum(Authentication authentication)
     {
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         return Response.<List<?>>builder()
-            .data(orderService.getYearlySalesSum())
+            .data(orderService.getYearlySalesSum(user.getRole() == Role.USER ? user.getId() : null))
             .build();
     }
 

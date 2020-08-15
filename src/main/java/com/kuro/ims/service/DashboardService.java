@@ -26,7 +26,7 @@ public class DashboardService
     private final UserService userService;
 
 
-    public Map<String, Long> totalCounts()
+    public Map<String, Long> getTotalCounts(Long userId)
     {
         Map<String, Future<Long>> kpis = new HashMap<>();
 
@@ -34,7 +34,7 @@ public class DashboardService
 
         kpis.put("customers", CompletableFuture.supplyAsync(customerService::getCustomerCount));
         kpis.put("products", CompletableFuture.supplyAsync(productService::getProductCount));
-        kpis.put("orders", CompletableFuture.supplyAsync(orderService::getOrderCount));
+        kpis.put("orders", CompletableFuture.supplyAsync(() -> orderService.getOrderCount(userId)));
         kpis.put("users", CompletableFuture.supplyAsync(userService::getUserCount));
         kpis.put("categories", CompletableFuture.supplyAsync(categoryService::getCategoryCount));
 
@@ -53,13 +53,13 @@ public class DashboardService
     }
 
 
-    public Map<String, BigDecimal> getTotalSums()
+    public Map<String, BigDecimal> getTotalSums(Long userId)
     {
         Map<String, Future<BigDecimal>> kpis = new HashMap<>();
 
         Map<String, BigDecimal> result = new HashMap<>();
 
-        kpis.put("current-month-total-sales", CompletableFuture.supplyAsync(orderService::getMonthlyOrderSum));
+        kpis.put("current-month-total-sales", CompletableFuture.supplyAsync(() -> orderService.getMonthlyOrderSum(userId)));
 
         kpis.forEach((k, v) -> {
             try
@@ -68,7 +68,7 @@ public class DashboardService
             }
             catch (InterruptedException | ExecutionException e)
             {
-                log.error(null, e);
+                log.error("null", e);
             }
         });
 

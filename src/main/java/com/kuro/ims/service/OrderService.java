@@ -13,7 +13,6 @@ import com.kuro.ims.util.FilterUtil;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,11 +88,12 @@ public class OrderService
     }
 
 
-    public List<Order> getOrders(LocalDate startDate, LocalDate endDate)
+    public List<Order> getOrders(LocalDate startDate, LocalDate endDate, Long userId)
     {
         Specification<Order> specification =
             Specification
-                .where(FilterUtil.buildCreatedAtFilter(startDate, endDate));
+                .<Order>where(FilterUtil.buildCreatedAtFilter(startDate, endDate))
+                .and(FilterUtil.buildCreatedByFilter(userId));
 
         return orderRepository.findAll(specification, Pageable.unpaged()).getContent();
     }
@@ -111,31 +111,43 @@ public class OrderService
     }
 
 
-    public Long getOrderCount()
+    public Long getOrderCount(Long userId)
     {
-        return this.orderRepository.count();
+        Specification<Order> specification =
+            Specification
+                .where(FilterUtil.buildCreatedByFilter(userId));
+
+        return this.orderRepository.count(specification);
     }
 
 
-    public List<Map<BigDecimal, String>> getYearlySalesSum()
+    public List<Map<BigDecimal, String>> getYearlySalesSum(Long userId)
     {
-        return this.orderRepository.findYearlySalesSum();
+        if (userId == null)
+        {
+            return this.orderRepository.findYearlySalesSum();
+        }
+        else
+        {
+            return this.orderRepository.findYearlySalesSumForUser(userId);
+        }
     }
 
 
-    public BigDecimal getMonthlyOrderSum()
+    public BigDecimal getMonthlyOrderSum(Long userId)
     {
-        LocalDateTime firstDayOfTheMonth = LocalDateTime.now()
+        LocalDate firstDayOfTheMonth = LocalDateTime.now()
             .toLocalDate()
-            .atTime(LocalTime.MIN)
             .with(TemporalAdjusters.firstDayOfMonth());
 
-        LocalDateTime lastDayOfTheMonth = LocalDateTime.now()
+        LocalDate lastDayOfTheMonth = LocalDateTime.now()
             .toLocalDate()
-            .atTime(LocalTime.MAX)
             .with(TemporalAdjusters.lastDayOfMonth());
 
-        return this.orderRepository.totalSumBetween(firstDayOfTheMonth, lastDayOfTheMonth).orElse(BigDecimal.ZERO);
+        return this.getOrders(firstDayOfTheMonth, lastDayOfTheMonth, userId)
+            .stream()
+            .map(Order::getGrossAmount)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 
