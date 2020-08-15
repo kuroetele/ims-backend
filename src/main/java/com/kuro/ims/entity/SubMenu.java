@@ -1,8 +1,11 @@
 package com.kuro.ims.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kuro.ims.type.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,9 +24,14 @@ public class SubMenu extends AuditableEntity
 
     private String route;
 
+    private boolean isVisible;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "menuId")
+    @JoinColumn(name = "menu_id")
     private Menu menu;
 
     @Column(columnDefinition = "boolean default true")

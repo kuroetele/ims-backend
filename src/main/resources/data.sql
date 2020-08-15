@@ -24,22 +24,22 @@ insert into users (name, email, password, role) values ('user', 'user@user.com',
   values ('IMS', 'Lagos', 5, '000000000', 'ims@gmail.com', '₦');
 
 --menu
-insert into menu (name, icon, route)
+insert into menu (name, icon, route, role)
 values
-('Dashboard', 'fa fa-home', 'dashboard'),
-('Customer', 'fa fa-user-o', 'customer'),
-('Manage User', 'fa fa-users', 'user'),
-('Product Manage', 'fa fa-product-hunt', ''),
-('Manage Sales', 'fa fa-credit-card', ''),
-('Report', 'fa fa-bug', 'dashboard'),
-('Setting', 'fa fa-cog', 'setting');
+('Dashboard', 'fa fa-home', 'dashboard', 'USER'),
+('Customer', 'fa fa-user-o', 'customer', 'USER'),
+('Manage User', 'fa fa-users', 'user', 'ADMIN'),
+('Product Manage', 'fa fa-product-hunt', '', 'ADMIN'),
+('Manage Sales', 'fa fa-credit-card', '', 'USER'),
+('Report', 'fa fa-bug', 'dashboard', 'USER'),
+('Setting', 'fa fa-cog', 'setting', 'ADMIN');
 
 
 --sub-menu
-insert into sub_menu (name, route, menu_id, priority)
+insert into sub_menu (name, route, menu_id, priority, role, is_visible)
 values
-('Category','category', 4, 1),
-('Product','product', 4, 2),
-('New Sales','sales', 5, 1),
-('Sale History','sales-history', 5, 2),
-('Sale Report','sales-report', 6, 2);
+('Category','category', 4, 1, 'ADMIN', true),
+('Product','product', 4, 2, 'ADMIN', true),
+('New Sales','sales', 5, 1, 'USER', true),
+('Sale History','sales-history', 5, 2, 'USER', true),
+('Sale Report','sales-report', 6, 2, 'USER', true);
