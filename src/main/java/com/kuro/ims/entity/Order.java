@@ -4,6 +4,7 @@ import com.kuro.ims.type.PaymentType;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -39,5 +40,8 @@ public class Order extends AuditableEntity
     private String currency;
 
     private String invoiceNumber;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
 }

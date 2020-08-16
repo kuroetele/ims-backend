@@ -36,8 +36,8 @@ public class Product extends AuditableEntity
     @Column(unique = true)
     private String serialNumber;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean enabled;
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
     private Long minQuantity;
 

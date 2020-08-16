@@ -1,5 +1,6 @@
 package com.kuro.ims.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class Setting extends AuditableEntity
 
     private String phone;
 
+    @Column(columnDefinition = "text")
     private String image;
 
     private Double vatPercentage;

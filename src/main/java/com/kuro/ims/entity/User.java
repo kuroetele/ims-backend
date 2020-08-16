@@ -33,8 +33,8 @@ public class User extends AuditableEntity
     @Column(unique = true)
     private String email;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean enabled;
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
     @Enumerated(EnumType.STRING)
     private Role role;

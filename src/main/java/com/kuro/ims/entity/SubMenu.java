@@ -34,6 +34,6 @@ public class SubMenu extends AuditableEntity
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean enabled;
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 }

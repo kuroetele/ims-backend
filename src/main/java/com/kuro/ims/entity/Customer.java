@@ -21,7 +21,7 @@ public class Customer extends AuditableEntity
 
     private String name;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean enabled;
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
 }

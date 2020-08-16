@@ -27,12 +27,12 @@ public class Menu extends AuditableEntity
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
     private List<SubMenu> subMenus;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean enabled;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(columnDefinition = "boolean default true")
     private boolean isVisible;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 }
