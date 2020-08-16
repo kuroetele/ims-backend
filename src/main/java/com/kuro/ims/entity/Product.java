@@ -43,4 +43,7 @@ public class Product extends AuditableEntity
 
     private Long maxQuantity;
 
+    @Column(columnDefinition = "text")
+    private String image;
+
 }
