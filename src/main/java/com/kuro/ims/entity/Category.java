@@ -1,6 +1,7 @@
 package com.kuro.ims.entity;
 
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,5 +20,8 @@ public class Category extends AuditableEntity
 
     @OneToMany
     private List<Product> products;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
 }

@@ -62,10 +62,10 @@ public class ProductService
     }
 
 
-    public void disableProduct(Long id)
+    public void deleteProduct(Long id)
     {
         Product product = this.getProduct(id);
-        product.setEnabled(false);
+        product.setDeleted(true);
         productRepository.save(product);
     }
 

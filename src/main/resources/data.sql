@@ -29,7 +29,7 @@ values
 ('Dashboard', 'fa fa-home', 'dashboard', 'USER'),
 ('Customer', 'fa fa-user-o', 'customer', 'USER'),
 ('Manage User', 'fa fa-users', 'user', 'ADMIN'),
-('Product Manage', 'fa fa-product-hunt', '', 'ADMIN'),
+('Manage Product', 'fa fa-product-hunt', '', 'ADMIN'),
 ('Manage Sales', 'fa fa-credit-card', '', 'USER'),
 ('Report', 'fa fa-bug', 'dashboard', 'USER'),
 ('Setting', 'fa fa-cog', 'setting', 'ADMIN');

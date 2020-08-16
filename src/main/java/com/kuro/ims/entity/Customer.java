@@ -24,4 +24,7 @@ public class Customer extends AuditableEntity
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
+    @Column(columnDefinition = "text")
+    private String  image;
+
 }

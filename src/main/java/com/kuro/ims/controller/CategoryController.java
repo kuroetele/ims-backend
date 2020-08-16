@@ -59,6 +59,6 @@ public class CategoryController
     @DeleteMapping("/api/categories/{id}")
     public void disableCategory(@PathVariable Long id)
     {
-        categoryService.disableCategory(id);
+        categoryService.deleteCategory(id);
     }
 }

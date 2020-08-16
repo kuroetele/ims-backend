@@ -34,10 +34,10 @@ public class CategoryService
     }
 
 
-    public void disableCategory(Long id)
+    public void deleteCategory(Long id)
     {
         Category category = getCategory(id);
-        category.setEnabled(false);
+        category.setDeleted(true);
         categoryRepository.save(category);
     }
 

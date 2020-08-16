@@ -1,5 +1,6 @@
 package com.kuro.ims.service;
 
+import com.kuro.ims.dto.EntityId;
 import com.kuro.ims.dto.OrderDto;
 import com.kuro.ims.entity.Customer;
 import com.kuro.ims.entity.Order;
@@ -37,7 +38,7 @@ public class OrderService
 
 
     @Transactional
-    public void createOrder(OrderDto orderDto)
+    public EntityId createOrder(OrderDto orderDto)
     {
         Customer customer = customerService.getCustomer(orderDto.getCustomerId());
 
@@ -84,7 +85,9 @@ public class OrderService
         order.setPaymentType(orderDto.getPaymentType());
         order.setDiscountPercentage(orderDto.getDiscountPercentage());
         order.setInvoiceNumber(String.valueOf(System.currentTimeMillis()));
-        orderRepository.save(order);
+        return EntityId.builder()
+            .id(orderRepository.save(order).getId())
+            .build();
     }
 
 

@@ -1,6 +1,7 @@
 package com.kuro.ims.controller;
 
 import com.kuro.ims.config.security.CustomUserDetails;
+import com.kuro.ims.dto.EntityId;
 import com.kuro.ims.dto.OrderDto;
 import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Order;
@@ -30,9 +31,11 @@ public class OrderController
 
 
     @PostMapping
-    public void createOrder(@RequestBody OrderDto orderDto)
+    public Response<EntityId> createOrder(@RequestBody OrderDto orderDto)
     {
-        orderService.createOrder(orderDto);
+        return Response.<EntityId>builder()
+            .data(orderService.createOrder(orderDto))
+            .build();
     }
 
 

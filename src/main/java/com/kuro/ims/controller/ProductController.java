@@ -80,7 +80,7 @@ public class ProductController
     @DeleteMapping("/{id}")
     public void disableProduct(@PathVariable Long id)
     {
-        productService.disableProduct(id);
+        productService.deleteProduct(id);
     }
 
 
