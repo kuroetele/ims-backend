@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @AllArgsConstructor
@@ -71,7 +72,7 @@ public class UserService
 
         BeanUtils.copyProperties(user, userToUpdate);
 
-        if (userToUpdate.getPassword() == null)
+        if (StringUtils.isEmpty(userToUpdate.getPassword()))
         {
             userToUpdate.setPassword(oldPassword);
         }

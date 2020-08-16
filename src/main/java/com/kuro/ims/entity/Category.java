@@ -1,5 +1,6 @@
 package com.kuro.ims.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,8 @@ public class Category extends AuditableEntity
 
     private String description;
 
-    @OneToMany
+    @JsonBackReference
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 
     @Column(columnDefinition = "boolean default false")

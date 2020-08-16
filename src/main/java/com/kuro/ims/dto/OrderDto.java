@@ -15,5 +15,5 @@ public class OrderDto
 
     private PaymentType paymentType;
 
-    private Double discountPercentage;
+    private Double discountPercentage = 0D;
 }

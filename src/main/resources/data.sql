@@ -1,8 +1,8 @@
--- admin
-insert into users (name, email, password, role) values ('admin', 'admin@admin.com', '$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi', 'ADMIN');
-
---user
-insert into users (name, email, password, role) values ('user', 'user@user.com', '$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi', 'USER');
+-- users
+insert into users (name, email, password, role, phone)
+values
+('admin', 'admin@admin.com', '$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi', 'ADMIN', '00000000'),
+('user', 'user@user.com', '$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi', 'USER', '0000000000');
 
  --customer
  insert into customer (name, email, phone, address) values ('customer', 'customer@customer.com', '00000000', 'Lagos');

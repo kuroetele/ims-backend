@@ -1,5 +1,6 @@
 package com.kuro.ims.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kuro.ims.type.PaymentType;
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,7 +24,8 @@ public class Order extends AuditableEntity
     @ManyToOne
     private Customer customer;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderProduct> orderProducts;
 
     private BigDecimal netAmount;

@@ -18,6 +18,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,7 +41,9 @@ public class OrderService
     @Transactional
     public EntityId createOrder(OrderDto orderDto)
     {
-        Customer customer = customerService.getCustomer(orderDto.getCustomerId());
+        Customer customer = Optional.ofNullable(orderDto.getCustomerId())
+            .map(customerService::getCustomer)
+            .orElse(null);
 
         Order order = new Order();
         order.setCustomer(customer);

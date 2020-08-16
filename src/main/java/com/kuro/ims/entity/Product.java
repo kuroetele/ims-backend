@@ -1,5 +1,6 @@
 package com.kuro.ims.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -20,6 +21,7 @@ public class Product extends AuditableEntity
 
     private String description;
 
+    @JsonManagedReference
     @ManyToOne
     private Category category;
 
