@@ -1,12 +1,13 @@
 package com.kuro.ims.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuro.ims.type.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class User extends AuditableEntity
 
     private String name;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private String password;
 
     private String address;
@@ -39,5 +40,12 @@ public class User extends AuditableEntity
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @JsonIgnore
+    @Transient
+    private String plainPassword;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean passwordChangeRequired;
 
 }

@@ -4,13 +4,17 @@ import com.kuro.ims.dto.UpdatePasswordDto;
 import com.kuro.ims.entity.User;
 import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.UserRepository;
+import com.kuro.ims.util.CommonUtil;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserService
@@ -18,6 +22,8 @@ public class UserService
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
 
     public User getUser(Long id)
@@ -32,14 +38,19 @@ public class UserService
     }
 
 
+    @Transactional
     public void createUser(User user)
     {
+        String password = CommonUtil.generatePassword();
+        log.debug("Password generated => {}", password);
         userRepository.findByEmail(user.getEmail())
             .ifPresent(u -> {
                 throw new ImsClientException("A user with the specified email already exist");
             });
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        user.setPlainPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setPasswordChangeRequired(true);
+        applicationEventPublisher.publishEvent(userRepository.save(user));
     }
 
 
@@ -60,6 +71,7 @@ public class UserService
         {
             throw new ImsClientException("New password cannot be the same as the current one");
         }
+        user.setPasswordChangeRequired(false);
         user.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPassword()));
         userRepository.save(user);
     }
@@ -68,23 +80,13 @@ public class UserService
     public void updateUser(Long id, User user)
     {
         User userToUpdate = getUser(id);
-        String oldPassword = userToUpdate.getPassword();
+        String password = userToUpdate.getPassword();
 
         BeanUtils.copyProperties(user, userToUpdate);
 
-        if (StringUtils.isEmpty(userToUpdate.getPassword()))
-        {
-            userToUpdate.setPassword(oldPassword);
-        }
-        else
-        {
-            if (!userToUpdate.getPassword().equals(oldPassword))
-            {
-                userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
-        }
+        userToUpdate.setPassword(password);
         userToUpdate.setId(id);
         userRepository.save(userToUpdate);
-
     }
+
 }

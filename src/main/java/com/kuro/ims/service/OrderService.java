@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class OrderService
     private final ProductService productService;
 
     private final SettingService settingService;
+
+    private ApplicationEventPublisher applicationEventPublisher;
 
 
     @Transactional
@@ -88,6 +91,8 @@ public class OrderService
         order.setPaymentType(orderDto.getPaymentType());
         order.setDiscountPercentage(orderDto.getDiscountPercentage());
         order.setInvoiceNumber(String.valueOf(System.currentTimeMillis()));
+
+        applicationEventPublisher.publishEvent(order);
         return EntityId.builder()
             .id(orderRepository.save(order).getId())
             .build();
