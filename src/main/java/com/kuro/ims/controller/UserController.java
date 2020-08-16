@@ -33,7 +33,7 @@ public class UserController
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/{id]")
+    @GetMapping("/{id}")
     public Response<User> getUser(@PathVariable Long id)
     {
         return Response.<User>builder()
