@@ -6,6 +6,7 @@ import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.UserRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +61,29 @@ public class UserService
         }
         user.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPassword()));
         userRepository.save(user);
+    }
+
+
+    public void updateUser(Long id, User user)
+    {
+        User userToUpdate = getUser(id);
+        String oldPassword = userToUpdate.getPassword();
+
+        BeanUtils.copyProperties(user, userToUpdate);
+
+        if (userToUpdate.getPassword() == null)
+        {
+            userToUpdate.setPassword(oldPassword);
+        }
+        else
+        {
+            if (!userToUpdate.getPassword().equals(oldPassword))
+            {
+                userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+        }
+        userToUpdate.setId(id);
+        userRepository.save(userToUpdate);
+
     }
 }

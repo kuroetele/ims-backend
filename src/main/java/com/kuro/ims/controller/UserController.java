@@ -4,6 +4,7 @@ import com.kuro.ims.config.security.CustomUserDetails;
 import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.User;
 import com.kuro.ims.service.UserService;
+import com.kuro.ims.type.Role;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,4 +59,22 @@ public class UserController
     {
         userService.createUser(user);
     }
+
+
+    @GetMapping("/roles")
+    public Response<?> getRoles()
+    {
+        return Response.<Role[]>builder()
+            .data(Role.values())
+            .build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{id}")
+    public void updateUser(@PathVariable Long id, @RequestBody User user)
+    {
+        userService.updateUser(id, user);
+    }
+
+
 }

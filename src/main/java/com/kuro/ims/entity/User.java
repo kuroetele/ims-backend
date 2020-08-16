@@ -28,6 +28,7 @@ public class User extends AuditableEntity
 
     private String phone;
 
+    @Column(columnDefinition = "text")
     private String image;
 
     @Column(unique = true)
