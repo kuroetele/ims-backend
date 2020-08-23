@@ -5,6 +5,7 @@ import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.CategoryRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,18 +30,11 @@ public class CategoryService
 
     public void updateCategory(Long id, Category category)
     {
-        category.setId(id);
-        categoryRepository.save(category);
+        Category existingCategory = getCategory(id);
+        BeanUtils.copyProperties(category, existingCategory);
+        existingCategory.setId(id);
+        categoryRepository.save(existingCategory);
     }
-
-
-    public void deleteCategory(Long id)
-    {
-        Category category = getCategory(id);
-        category.setDeleted(true);
-        categoryRepository.save(category);
-    }
-
 
     public List<Category> getCategories()
     {
