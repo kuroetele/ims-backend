@@ -7,6 +7,7 @@ import com.kuro.ims.repository.ProductRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -57,10 +58,15 @@ public class ProductService
 
     public void updateProduct(Long productId, Product product)
     {
+        Product existingProduct = getProduct(productId);
         Category category = categoryService.getCategory(product.getCategoryId());
-        product.setCategory(category);
-        product.setId(productId);
-        productRepository.save(product);
+
+        BeanUtils.copyProperties(product, existingProduct);
+
+        existingProduct.setId(productId);
+        existingProduct.setCategory(category);
+
+        productRepository.save(existingProduct);
     }
 
     public Long getProductCount()
