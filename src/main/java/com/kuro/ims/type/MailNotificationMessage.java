@@ -1,6 +1,7 @@
 package com.kuro.ims.type;
 
 import com.kuro.ims.entity.Order;
+import com.kuro.ims.entity.OrderProduct;
 import com.kuro.ims.entity.User;
 import java.util.List;
 import org.springframework.mail.SimpleMailMessage;
@@ -44,7 +45,49 @@ public enum MailNotificationMessage
                     order.getInvoiceNumber(),
                     order.getGrossAmount(),
                     order.getCreatedAt()));
-                message.setSubject(String.format("New Order", order.getInvoiceNumber()));
+                message.setSubject(String.format("New Order %s", order.getInvoiceNumber()));
+                return message;
+            }
+        },
+
+    CUSTOMER_INVOICE
+        {
+            @Override
+            public SimpleMailMessage getSimpleMailMessage(Object params)
+            {
+                Order order = (Order) params;
+                StringBuilder template = new StringBuilder("Dear " + order.getCustomer().getName() + ",");
+                template.append("Thank you for your order. Find below your purchase details:\n\n");
+                template.append("Invoice Number: ").append(order.getInvoiceNumber()).append("\n");
+                template.append("Date:").append(order.getCreatedAt()).append("\n\n\n");
+
+                List<OrderProduct> orderProducts = order.getOrderProducts();
+                for (int i = 0, orderProductsSize = orderProducts.size(); i < orderProductsSize; i++)
+                {
+                    OrderProduct p = orderProducts.get(i);
+                    template
+                        .append(i + 1)
+                        .append(")     ")
+                        .append(p.getProduct().getName())
+                        .append("     ")
+                        .append(p.getQuantity())
+                        .append("     ")
+                        .append(p.getUnitPrice())
+                        .append("     ")
+                        .append(p.getTotalPrice())
+                        .append("\n\n\n");
+                }
+
+                template.append("Net Total: ").append(order.getNetAmount()).append("\n");
+                template.append("VAT percentage: ").append(order.getVatPercentage()).append("\n");
+                template.append("Gross Total: ").append(order.getGrossAmount()).append("\n");
+                template.append("Discount percentage: ").append(order.getDiscountPercentage() == null ? "-" : order.getDiscountPercentage()).append("\n");
+                template.append("Loyalty Points: ").append(order.getLoyaltyDiscountAmount() == null ? "-" : order.getLoyaltyDiscountAmount()).append("\n");
+                template.append("Total Paid: ").append(order.getTotalPaid()).append("\n");
+
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setText(template.toString());
+                message.setSubject(String.format("Order purchase successful %s", order.getInvoiceNumber()));
                 return message;
             }
         },

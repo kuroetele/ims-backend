@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Formula;
@@ -29,13 +30,21 @@ public class Order extends AuditableEntity
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderProduct> orderProducts;
 
+    @NotNull
     private BigDecimal netAmount;
 
+    @NotNull
     private Double vatPercentage;
 
+    @NotNull
     private BigDecimal grossAmount;
 
     private Double discountPercentage;
+
+    private BigDecimal loyaltyDiscountAmount;
+
+    @NotNull
+    private BigDecimal totalPaid;
 
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;

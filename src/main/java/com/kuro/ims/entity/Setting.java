@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Data;
@@ -36,4 +38,8 @@ public class Setting extends AuditableEntity
     private String image;
 
     private Double vatPercentage;
+
+    @Max(value = 100, message = "loyalty points percentage cannot be greater than 100")
+    @Min(value = 1, message = "loyalty points percentage cannot be less than 1")
+    private Integer loyaltyPointsPercentage;
 }

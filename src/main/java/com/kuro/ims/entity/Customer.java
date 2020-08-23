@@ -1,5 +1,7 @@
 package com.kuro.ims.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -33,6 +35,9 @@ public class Customer extends AuditableEntity
     private boolean deleted;
 
     @Column(columnDefinition = "mediumtext")
-    private String  image;
+    private String image;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private BigDecimal loyaltyPoints = BigDecimal.ZERO;
 
 }

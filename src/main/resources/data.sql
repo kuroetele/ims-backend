@@ -5,7 +5,7 @@ values
 ('user', 'user@user.com', '$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi', 'SALES_PERSON', '00000000000', 'Lagos');
 
  --customer
- insert into customer (name, email, phone, address) values ('customer', 'customer@customer.com', '00000000', 'Lagos');
+ insert into customer (name, email, phone, address) values ('Mr. Henry George', 'customer@customer.com', '00000000000', 'Lagos');
 
  --category
  insert into category (name, description)
@@ -25,8 +25,8 @@ values
  ('Roku box', 'Roku box', 8000, 10000, 5, 10, 20, 1, '1597179176675');
 
 --setting
- insert into setting (company_name, address, vat_percentage, phone, email, currency)
-  values ('IMS', 'Lagos', 5, '00000000000', 'ims@gmail.com', '₦');
+ insert into setting (company_name, address, vat_percentage, phone, email, currency, loyalty_points_percentage)
+  values ('IMS', 'Lagos', 5, '00000000000', 'ims@gmail.com', '₦', 10);
 
 --menu
 insert into menu (name, icon, route, role)

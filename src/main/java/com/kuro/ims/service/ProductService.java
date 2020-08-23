@@ -8,7 +8,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -60,14 +59,6 @@ public class ProductService
         Category category = categoryService.getCategory(product.getCategoryId());
         product.setCategory(category);
         product.setId(productId);
-        productRepository.save(product);
-    }
-
-
-    @Transactional
-    public void vendProduct(Product product, Integer count)
-    {
-        product.setAvailableQuantity(product.getAvailableQuantity() - count);
         productRepository.save(product);
     }
 

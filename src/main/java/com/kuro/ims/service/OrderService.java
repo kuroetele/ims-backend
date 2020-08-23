@@ -68,7 +68,7 @@ public class OrderService
             orderProduct.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(quantity)));
             orderProduct.setOrder(order);
 
-            productService.vendProduct(product, quantity);
+            product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
 
             orderProducts.add(orderProduct);
         });
@@ -87,15 +87,52 @@ public class OrderService
 
         order.setOrderProducts(orderProducts);
         order.setNetAmount(netAmount);
+        BigDecimal balance = customer != null
+            ? Optional.ofNullable(customer.getLoyaltyPoints()).orElse(BigDecimal.ZERO)
+            : BigDecimal.ZERO;
+
+        if (shouldApplyLoyalty(orderDto, customer))
+        {
+            BigDecimal loyaltyDiscountAmount = balance;
+            order.setLoyaltyDiscountAmount(loyaltyDiscountAmount);
+            order.setGrossAmount(grossAmount);
+            balance =
+                loyaltyDiscountAmount.subtract(grossAmount)
+                    .compareTo(BigDecimal.ZERO) >= 0
+                    ? loyaltyDiscountAmount.subtract(grossAmount)
+                    : BigDecimal.ZERO;
+            order.setTotalPaid(grossAmount.subtract(loyaltyDiscountAmount));
+        }
+        else
+        {
+            order.setTotalPaid(grossAmount);
+        }
+
         order.setGrossAmount(grossAmount);
         order.setPaymentType(orderDto.getPaymentType());
         order.setDiscountPercentage(orderDto.getDiscountPercentage());
         order.setInvoiceNumber(String.valueOf(System.currentTimeMillis()));
 
+        if (storeSetting.getLoyaltyPointsPercentage() != null && customer != null)
+        {
+            customer.setLoyaltyPoints(
+                balance.add(grossAmount.multiply(BigDecimal.valueOf((double) storeSetting.getLoyaltyPointsPercentage() / 100)))
+            );
+        }
+
         applicationEventPublisher.publishEvent(order);
         return EntityId.builder()
             .id(orderRepository.save(order).getId())
             .build();
+    }
+
+
+    private boolean shouldApplyLoyalty(OrderDto orderDto, Customer customer)
+    {
+        return customer != null &&
+            customer.getLoyaltyPoints() != null &&
+            customer.getLoyaltyPoints().compareTo(BigDecimal.ZERO) > 0 &&
+            orderDto.isRedeemLoyaltyPoints();
     }
 
 

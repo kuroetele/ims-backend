@@ -20,4 +20,6 @@ public class OrderDto
     private PaymentType paymentType;
 
     private Double discountPercentage = 0D;
+
+    private boolean redeemLoyaltyPoints;
 }
