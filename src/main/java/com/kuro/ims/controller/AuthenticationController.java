@@ -8,6 +8,7 @@ import com.kuro.ims.dto.UpdatePasswordDto;
 import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.service.JwtUserDetailsService;
 import com.kuro.ims.service.UserService;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +36,7 @@ public class AuthenticationController
 
 
     @PostMapping(value = {"/api/authenticate","/api/user-login"})
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtRequest authenticationRequest) throws Exception
     {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -47,7 +48,7 @@ public class AuthenticationController
     }
 
     @PostMapping("/api/update-password")
-    public void updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto, Authentication authentication){
+    public void updatePassword(@RequestBody @Valid UpdatePasswordDto updatePasswordDto, Authentication authentication){
         userService.updatePassword(((CustomUserDetails) authentication.getPrincipal()).getId(), updatePasswordDto);
     }
 

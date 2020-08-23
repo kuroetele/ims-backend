@@ -4,6 +4,7 @@ import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Category;
 import com.kuro.ims.service.CategoryService;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +42,7 @@ public class CategoryController
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/api/categories")
-    public void createCategory(@RequestBody Category category)
+    public void createCategory(@RequestBody @Valid Category category)
     {
         categoryService.createCategory(category);
     }
@@ -49,7 +50,7 @@ public class CategoryController
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/api/categories/{id}")
-    public void updateCategory(@PathVariable Long id, @RequestBody Category category)
+    public void updateCategory(@PathVariable Long id, @RequestBody @Valid Category category)
     {
         categoryService.updateCategory(id, category);
     }

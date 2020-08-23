@@ -5,6 +5,7 @@ import com.kuro.ims.service.MailNotificationService;
 import com.kuro.ims.type.MailNotificationMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +15,7 @@ public class UserEventListener
     private MailNotificationService mailNotificationService;
 
 
+    @Async
     @EventListener
     public void userCreatedEvent(User user)
     {

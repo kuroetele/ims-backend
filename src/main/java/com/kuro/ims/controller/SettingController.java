@@ -3,6 +3,7 @@ package com.kuro.ims.controller;
 import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Setting;
 import com.kuro.ims.service.SettingService;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class SettingController
 
 
     @PostMapping("/{id}")
-    public void updateSetting(@PathVariable Long id, @RequestBody Setting setting)
+    public void updateSetting(@PathVariable Long id, @RequestBody @Valid Setting setting)
     {
         settingService.updateSetting(id, setting);
     }

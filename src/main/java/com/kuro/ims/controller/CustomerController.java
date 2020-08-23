@@ -4,6 +4,7 @@ import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Customer;
 import com.kuro.ims.service.CustomerService;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,14 +41,14 @@ public class CustomerController
 
 
     @PostMapping
-    public void createCustomer(@RequestBody Customer customer)
+    public void createCustomer(@RequestBody @Valid Customer customer)
     {
         customerService.createCustomer(customer);
     }
 
 
     @PutMapping("/{id}")
-    public void updateCustomer(@PathVariable Long id, @RequestBody Customer customer)
+    public void updateCustomer(@PathVariable Long id, @RequestBody @Valid Customer customer)
     {
         customerService.updateCustomer(id, customer);
     }

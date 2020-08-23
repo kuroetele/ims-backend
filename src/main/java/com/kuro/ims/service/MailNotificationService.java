@@ -26,7 +26,7 @@ public class MailNotificationService
         }
         catch (MailException e)
         {
-           throw new ImsException("Unable to send mail. Kindly check mail configurations");
+           throw new ImsException("Unable to send mail. Kindly check mail configurations", e);
         }
     }
 }

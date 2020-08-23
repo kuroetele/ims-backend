@@ -6,9 +6,9 @@ import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.UserRepository;
 import com.kuro.ims.util.CommonUtil;
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -77,15 +77,38 @@ public class UserService
     }
 
 
+    public void updateCurrentUser(Long id, User user)
+    {
+        User userToUpdate = getUser(id);
+
+        Optional.ofNullable(user.getName())
+            .ifPresent(userToUpdate::setName);
+        Optional.ofNullable(user.getPhone())
+            .ifPresent(userToUpdate::setPhone);
+        Optional.ofNullable(user.getAddress())
+            .ifPresent(userToUpdate::setAddress);
+        Optional.ofNullable(user.getImage())
+            .ifPresent(userToUpdate::setImage);
+
+        userRepository.save(userToUpdate);
+    }
+
+
     public void updateUser(Long id, User user)
     {
         User userToUpdate = getUser(id);
-        String password = userToUpdate.getPassword();
 
-        BeanUtils.copyProperties(user, userToUpdate);
+        Optional.ofNullable(user.getName())
+            .ifPresent(userToUpdate::setName);
+        Optional.ofNullable(user.getPhone())
+            .ifPresent(userToUpdate::setPhone);
+        Optional.ofNullable(user.getAddress())
+            .ifPresent(userToUpdate::setAddress);
+        Optional.ofNullable(user.getImage())
+            .ifPresent(userToUpdate::setImage);
+        Optional.ofNullable(user.getRole())
+            .ifPresent(userToUpdate::setRole);
 
-        userToUpdate.setPassword(password);
-        userToUpdate.setId(id);
         userRepository.save(userToUpdate);
     }
 

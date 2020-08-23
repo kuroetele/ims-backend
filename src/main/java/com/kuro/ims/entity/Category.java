@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "category")
 public class Category extends AuditableEntity
 {
+    @NotBlank(message = "name is required")
     private String name;
 
     private String description;

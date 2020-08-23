@@ -2,11 +2,14 @@ package com.kuro.ims.controller;
 
 import com.kuro.ims.config.security.CustomUserDetails;
 import com.kuro.ims.dto.Response;
+import com.kuro.ims.dto.UpdateUserDto;
 import com.kuro.ims.entity.User;
 import com.kuro.ims.service.UserService;
 import com.kuro.ims.type.Role;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +58,7 @@ public class UserController
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public void createUser(@RequestBody User user)
+    public void createUser(@RequestBody @Valid User user)
     {
         userService.createUser(user);
     }
@@ -69,9 +72,20 @@ public class UserController
             .build();
     }
 
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/me")
+    public void updateCurrentUser(@RequestBody @Valid UpdateUserDto updateUserDto, Authentication authentication)
+    {
+        User user = new User();
+        BeanUtils.copyProperties(updateUserDto, user);
+        userService.updateCurrentUser(((CustomUserDetails) authentication.getPrincipal()).getId(), user);
+    }
+
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public void updateUser(@PathVariable Long id, @RequestBody User user)
+    public void updateUser(@PathVariable Long id, @RequestBody @Valid User user)
     {
         userService.updateUser(id, user);
     }

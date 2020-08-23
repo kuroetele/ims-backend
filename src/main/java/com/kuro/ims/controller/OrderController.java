@@ -11,6 +11,7 @@ import com.kuro.ims.type.PaymentType;
 import com.kuro.ims.type.Role;
 import java.time.LocalDate;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,7 @@ public class OrderController
 
 
     @PostMapping
-    public Response<EntityId> createOrder(@RequestBody OrderDto orderDto)
+    public Response<EntityId> createOrder(@RequestBody @Valid OrderDto orderDto)
     {
         return Response.<EntityId>builder()
             .data(orderService.createOrder(orderDto))
@@ -47,7 +48,7 @@ public class OrderController
     {
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         return Response.<List<Order>>builder()
-            .data(orderService.getOrders(startDate, endDate, user.getRole() == Role.USER ? user.getId() : null))
+            .data(orderService.getOrders(startDate, endDate, user.getRole() == Role.SALES_PERSON ? user.getId() : null))
             .build();
     }
 
@@ -75,7 +76,7 @@ public class OrderController
     {
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         return Response.<List<?>>builder()
-            .data(orderService.getYearlySalesSum(user.getRole() == Role.USER ? user.getId() : null))
+            .data(orderService.getYearlySalesSum(user.getRole() == Role.SALES_PERSON ? user.getId() : null))
             .build();
     }
 

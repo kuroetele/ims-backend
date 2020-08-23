@@ -26,7 +26,7 @@ public class DashboardController
     {
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         return Response.<Map<String, Long>>builder()
-            .data(dashboardService.getTotalCounts(user.getRole() == Role.USER ? user.getId() : null))
+            .data(dashboardService.getTotalCounts(user.getRole() == Role.SALES_PERSON ? user.getId() : null))
             .build();
     }
 
@@ -36,7 +36,7 @@ public class DashboardController
     {
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         return Response.<Map<String, BigDecimal>>builder()
-            .data(dashboardService.getTotalSums(user.getRole() == Role.USER ? user.getId() : null))
+            .data(dashboardService.getTotalSums(user.getRole() == Role.SALES_PERSON ? user.getId() : null))
             .build();
     }
 }

@@ -1,59 +1,43 @@
-package com.kuro.ims.entity;
+package com.kuro.ims.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@Entity
-@Table(name = "product")
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class Product extends AuditableEntity
+public class ProductDto
 {
-    @NotBlank(message = "product name is required")
+    @NotBlank(message = "name is required")
     private String name;
 
     private String description;
 
     @NotNull(message = "category is required")
-    @ManyToOne
-    private Category category;
-
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long categoryId;
 
     @Positive(message = "available quantity must be greater than 0")
     private Long availableQuantity;
 
+    @NotNull(message = "cost price is required")
     @Positive(message = "cost price must be greater than 0")
     private BigDecimal costPrice;
 
+    @NotNull(message = "price is required")
     @Positive(message = "price must be greater than 0")
     private BigDecimal price;
 
-    @Column(unique = true)
+    @NotBlank(message = "sku is required")
     private String serialNumber;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean deleted;
-
+    @NotNull(message = "min quantity is required")
     @Positive(message = "min quantity must be greater than 0")
     private Long minQuantity;
 
+    @NotNull(message = "max quantity is required")
     @Positive(message = "max quantity must be greater than 0")
     private Long maxQuantity;
 
-    @Column(columnDefinition = "mediumtext")
     private String image;
-
 }

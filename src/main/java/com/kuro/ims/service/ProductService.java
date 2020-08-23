@@ -41,7 +41,17 @@ public class ProductService
     {
         Category category = categoryService.getCategory(product.getCategoryId());
         product.setCategory(category);
+        checkProductSerialNumber(product.getSerialNumber());
         productRepository.save(product);
+    }
+
+
+    private void checkProductSerialNumber(String serialNumber)
+    {
+        productRepository.findBySerialNumber(serialNumber)
+            .ifPresent(p -> {
+                throw new ImsClientException(String.format("%s already has the same serial number %s", p.getName(), serialNumber));
+            });
     }
 
 
@@ -76,8 +86,13 @@ public class ProductService
     }
 
 
-    public List<Product> getFirst5ProductsRunningLow(int size)
+    public List<Product> getFirstXProductsRunningLow(int size)
     {
         return productRepository.findProductsWithLowStock(PageRequest.of(0, size));
+    }
+
+    public List getFirstXTopSellingProducts(int size)
+    {
+        return productRepository.findTopSellingProducts(PageRequest.of(0, size));
     }
 }

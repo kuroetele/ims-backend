@@ -22,16 +22,16 @@ public class MenuService
     {
         List<Menu> menus = new ArrayList<>();
         List<Menu> all = menuRepository.findAll();
-        if (role == Role.USER)
+        if (role == Role.SALES_PERSON)
         {
             Menu others = new Menu();
             others.setVisible(false);
             others.setSubMenus( // menu is admin but submenu is user
                 all
                     .stream()
-                    .filter(m -> m.getRole() != Role.USER)
+                    .filter(m -> m.getRole() != Role.SALES_PERSON)
                     .flatMap(m -> m.getSubMenus().stream())
-                    .filter(s -> s.getRole() == Role.USER)
+                    .filter(s -> s.getRole() == Role.SALES_PERSON)
                     .collect(Collectors.toList())
             );
 
@@ -46,7 +46,7 @@ public class MenuService
                 .stream()
                 .filter(m -> m.getRole() != Role.ADMIN)
                 .flatMap(m -> m.getSubMenus().stream())
-                .filter(s -> s.getRole() == Role.USER)
+                .filter(s -> s.getRole() == Role.SALES_PERSON)
                 .collect(Collectors.groupingBy(SubMenu::getMenu))
                 .forEach((menu, subMenus) -> menus.add(menu));
 

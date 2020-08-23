@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Formula;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -45,5 +46,8 @@ public class Order extends AuditableEntity
 
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
+
+    @Formula("(select u.email from users u where created_by = u.id)")
+    private String soldBy;
 
 }

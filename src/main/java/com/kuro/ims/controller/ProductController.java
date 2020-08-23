@@ -1,10 +1,13 @@
 package com.kuro.ims.controller;
 
+import com.kuro.ims.dto.ProductDto;
 import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Product;
 import com.kuro.ims.service.ProductService;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +40,16 @@ public class ProductController
     public Response<List<Product>> getLowStockProducts(@RequestParam(defaultValue = "5") int size)
     {
         return Response.<List<Product>>builder()
-            .data(productService.getFirst5ProductsRunningLow(size))
+            .data(productService.getFirstXProductsRunningLow(size))
+            .build();
+    }
+
+
+    @GetMapping("/top-selling")
+    public Response<List> getTopSellingProducts(@RequestParam(defaultValue = "5") int size)
+    {
+        return Response.<List>builder()
+            .data(productService.getFirstXTopSellingProducts(size))
             .build();
     }
 
@@ -62,16 +74,20 @@ public class ProductController
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public void createProduct(@RequestBody Product product)
+    public void createProduct(@RequestBody @Valid ProductDto productDto)
     {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDto, product);
         productService.createProduct(product);
     }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public void updateProduct(@PathVariable Long id, @RequestBody Product product)
+    public void updateProduct(@PathVariable Long id, @RequestBody @Valid ProductDto productDto)
     {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDto, product);
         productService.updateProduct(id, product);
     }
 
