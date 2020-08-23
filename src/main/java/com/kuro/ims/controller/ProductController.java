@@ -5,11 +5,11 @@ import com.kuro.ims.dto.Response;
 import com.kuro.ims.entity.Product;
 import com.kuro.ims.service.ProductService;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,9 +46,9 @@ public class ProductController
 
 
     @GetMapping("/top-selling")
-    public Response<List> getTopSellingProducts(@RequestParam(defaultValue = "5") int size)
+    public Response<List<Map<String, Long>>> getTopSellingProducts(@RequestParam(defaultValue = "5") int size)
     {
-        return Response.<List>builder()
+        return Response.<List<Map<String, Long>>>builder()
             .data(productService.getFirstXTopSellingProducts(size))
             .build();
     }
@@ -89,14 +89,6 @@ public class ProductController
         Product product = new Product();
         BeanUtils.copyProperties(productDto, product);
         productService.updateProduct(id, product);
-    }
-
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{id}")
-    public void disableProduct(@PathVariable Long id)
-    {
-        productService.deleteProduct(id);
     }
 
 

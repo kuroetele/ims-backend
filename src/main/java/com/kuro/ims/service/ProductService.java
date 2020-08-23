@@ -5,6 +5,7 @@ import com.kuro.ims.entity.Product;
 import com.kuro.ims.exception.ImsClientException;
 import com.kuro.ims.repository.ProductRepository;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -62,15 +63,6 @@ public class ProductService
         productRepository.save(product);
     }
 
-
-    public void deleteProduct(Long id)
-    {
-        Product product = this.getProduct(id);
-        product.setDeleted(true);
-        productRepository.save(product);
-    }
-
-
     public Long getProductCount()
     {
         return this.productRepository.count();
@@ -82,7 +74,7 @@ public class ProductService
         return productRepository.findProductsWithLowStock(PageRequest.of(0, size));
     }
 
-    public List getFirstXTopSellingProducts(int size)
+    public List<Map<String, Long>> getFirstXTopSellingProducts(int size)
     {
         return productRepository.findTopSellingProducts(PageRequest.of(0, size));
     }
