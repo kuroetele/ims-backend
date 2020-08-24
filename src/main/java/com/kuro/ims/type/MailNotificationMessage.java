@@ -56,7 +56,7 @@ public enum MailNotificationMessage
             public SimpleMailMessage getSimpleMailMessage(Object params)
             {
                 Order order = (Order) params;
-                StringBuilder template = new StringBuilder("Dear " + order.getCustomer().getName() + ",");
+                StringBuilder template = new StringBuilder("Dear " + order.getCustomer().getName() + ",\n");
                 template.append("Thank you for your order. Find below your purchase details:\n\n");
                 template.append("Invoice Number: ").append(order.getInvoiceNumber()).append("\n");
                 template.append("Date:").append(order.getCreatedAt()).append("\n\n\n");

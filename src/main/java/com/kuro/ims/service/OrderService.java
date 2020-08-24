@@ -94,14 +94,16 @@ public class OrderService
         if (shouldApplyLoyalty(orderDto, customer))
         {
             BigDecimal loyaltyDiscountAmount = balance;
-            order.setLoyaltyDiscountAmount(loyaltyDiscountAmount);
+            order.setLoyaltyDiscountAmount(loyaltyDiscountAmount.subtract(grossAmount));
             order.setGrossAmount(grossAmount);
             balance =
                 loyaltyDiscountAmount.subtract(grossAmount)
                     .compareTo(BigDecimal.ZERO) >= 0
                     ? loyaltyDiscountAmount.subtract(grossAmount)
                     : BigDecimal.ZERO;
-            order.setTotalPaid(grossAmount.subtract(loyaltyDiscountAmount));
+
+            BigDecimal totalPaid = grossAmount.subtract(loyaltyDiscountAmount);
+            order.setTotalPaid(totalPaid.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : totalPaid);
         }
         else
         {
