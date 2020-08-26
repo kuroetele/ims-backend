@@ -192,7 +192,7 @@ class ProductServiceTest
         //given
         Map<String, Long> items = Collections.singletonMap("HP Pro", 1L);
 
-        when(productRepository.findTopSellingProducts(any())).thenReturn(Collections.singletonList(items));
+        when(productRepository.findTopSellingProductsForCurrentMonth(any())).thenReturn(Collections.singletonList(items));
 
         //when
         List<Map<String, Long>> products = productService.getFirstXTopSellingProducts(5);
@@ -202,7 +202,7 @@ class ProductServiceTest
 
         assertThat(products).hasSize(1);
         assertThat(products).containsExactly(items);
-        verify(productRepository).findTopSellingProducts(pageableArgumentCaptor.capture());
+        verify(productRepository).findTopSellingProductsForCurrentMonth(pageableArgumentCaptor.capture());
         assertThat(pageableArgumentCaptor.getValue().getPageSize()).isEqualTo(5);
     }
 

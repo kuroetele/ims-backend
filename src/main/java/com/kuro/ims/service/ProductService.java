@@ -80,8 +80,15 @@ public class ProductService
         return productRepository.findProductsWithLowStock(PageRequest.of(0, size));
     }
 
+
     public List<Map<String, Long>> getFirstXTopSellingProducts(int size)
     {
-        return productRepository.findTopSellingProducts(PageRequest.of(0, size));
+        return productRepository.findTopSellingProductsForCurrentMonth(PageRequest.of(0, size));
+    }
+
+
+    public List<Map<String, Long>> getTopSellingProducts()
+    {
+        return productRepository.findTopSellingProducts();
     }
 }

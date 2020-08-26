@@ -39,8 +39,6 @@ public class Order extends AuditableEntity
     @NotNull
     private BigDecimal grossAmount;
 
-    private Double discountPercentage;
-
     private BigDecimal loyaltyDiscountAmount;
 
     @NotNull

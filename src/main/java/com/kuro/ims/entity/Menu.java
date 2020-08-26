@@ -35,4 +35,6 @@ public class Menu extends AuditableEntity
 
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
+
+    private int priority;
 }

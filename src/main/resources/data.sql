@@ -29,15 +29,15 @@ values
   values ('IMS', 'Lagos', 5, '00000000000', 'ims@gmail.com', '₦', 10);
 
 --menu
-insert into menu (name, icon, route, role)
+insert into menu (name, icon, route, role, priority)
 values
-('Dashboard', 'fa fa-home', 'dashboard', 'SALES_PERSON'),
-('Customer', 'fa fa-user-o', 'customer', 'SALES_PERSON'),
-('Manage User', 'fa fa-users', 'user', 'ADMIN'),
-('Manage Product', 'fa fa-product-hunt', '', 'ADMIN'),
-('Manage Sales', 'fa fa-credit-card', '', 'SALES_PERSON'),
-('Report', 'fa fa-bug', 'dashboard', 'SALES_PERSON'),
-('Setting', 'fa fa-cog', 'setting', 'ADMIN');
+('Dashboard', 'fa fa-home', 'dashboard', 'SALES_PERSON', 1),
+('Customer', 'fa fa-user-o', 'customer', 'SALES_PERSON', 3),
+('Manage User', 'fa fa-users', 'user', 'ADMIN',2),
+('Manage Product', 'fa fa-product-hunt', '', 'ADMIN',4),
+('Manage Sales', 'fa fa-credit-card', '', 'SALES_PERSON',5),
+('Report', 'fa fa-bug', 'dashboard', 'SALES_PERSON',6),
+('Setting', 'fa fa-cog', 'setting', 'ADMIN',7);
 
 
 --sub-menu
@@ -49,4 +49,5 @@ values
 ('Sale History','sales-history', 5, 2, 'SALES_PERSON', true),
 ('Sale Invoice Details','sales-invoice-details', 5, 2, 'SALES_PERSON', false),
 ('Sale Report','sales-report', 6, 2, 'SALES_PERSON', true),
+('Top Selling Products','top-product-report', 6, 3, 'ADMIN', true),
 ('Profile-Settings','profile-settings', 7, 2, 'SALES_PERSON', false);

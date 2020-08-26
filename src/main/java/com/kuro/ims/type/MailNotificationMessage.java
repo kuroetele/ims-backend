@@ -81,8 +81,11 @@ public enum MailNotificationMessage
                 template.append("Net Total: ").append(order.getNetAmount()).append("\n");
                 template.append("VAT percentage: ").append(order.getVatPercentage()).append("\n");
                 template.append("Gross Total: ").append(order.getGrossAmount()).append("\n");
-                template.append("Discount percentage: ").append(order.getDiscountPercentage() == null ? "-" : order.getDiscountPercentage()).append("\n");
-                template.append("Loyalty Points: ").append(order.getLoyaltyDiscountAmount() == null ? "-" : order.getLoyaltyDiscountAmount()).append("\n");
+                if (order.getCustomer() != null)
+                {
+                    template.append("Loyalty Points Used: ").append(order.getLoyaltyDiscountAmount() == null ? "0" : order.getLoyaltyDiscountAmount()).append("\n");
+                    template.append("Loyalty Points Balance: ").append(order.getCustomer().getLoyaltyPoints() == null ? "0" : order.getCustomer().getLoyaltyPoints()).append("\n");
+                }
                 template.append("Total Paid: ").append(order.getTotalPaid()).append("\n");
 
                 SimpleMailMessage message = new SimpleMailMessage();

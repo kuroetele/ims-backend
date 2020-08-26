@@ -45,11 +45,20 @@ public class ProductController
     }
 
 
-    @GetMapping("/top-selling")
-    public Response<List<Map<String, Long>>> getTopSellingProducts(@RequestParam(defaultValue = "5") int size)
+    @GetMapping("/top-selling-current-month")
+    public Response<List<Map<String, Long>>> getTopSellingProductsForCurrentMonth(@RequestParam(defaultValue = "5") int size)
     {
         return Response.<List<Map<String, Long>>>builder()
             .data(productService.getFirstXTopSellingProducts(size))
+            .build();
+    }
+
+
+    @GetMapping("/top-selling")
+    public Response<List<Map<String, Long>>> getTopSellingProducts()
+    {
+        return Response.<List<Map<String, Long>>>builder()
+            .data(productService.getTopSellingProducts())
             .build();
     }
 

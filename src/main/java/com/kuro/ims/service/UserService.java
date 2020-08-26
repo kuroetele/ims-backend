@@ -108,6 +108,7 @@ public class UserService
             .ifPresent(userToUpdate::setImage);
         Optional.ofNullable(user.getRole())
             .ifPresent(userToUpdate::setRole);
+        userToUpdate.setDeleted(user.isDeleted());
 
         userRepository.save(userToUpdate);
     }

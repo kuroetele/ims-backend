@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +22,7 @@ public class MenuService
     public List<Menu> getMenus(Role role)
     {
         List<Menu> menus = new ArrayList<>();
-        List<Menu> all = menuRepository.findAll();
+        List<Menu> all = menuRepository.findAll(Sort.by("priority"));
         if (role == Role.SALES_PERSON)
         {
             Menu others = new Menu();

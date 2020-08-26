@@ -50,7 +50,6 @@ public class OrderService
 
         Order order = new Order();
         order.setCustomer(customer);
-        order.setDiscountPercentage(order.getDiscountPercentage());
 
         List<OrderProduct> orderProducts = new ArrayList<>();
 
@@ -112,7 +111,6 @@ public class OrderService
 
         order.setGrossAmount(grossAmount);
         order.setPaymentType(orderDto.getPaymentType());
-        order.setDiscountPercentage(orderDto.getDiscountPercentage());
         order.setInvoiceNumber(String.valueOf(System.currentTimeMillis()));
 
         if (storeSetting.getLoyaltyPointsPercentage() != null && customer != null)
