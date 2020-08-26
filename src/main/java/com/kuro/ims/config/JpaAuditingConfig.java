@@ -1,6 +1,7 @@
 package com.kuro.ims.config;
 
 import com.kuro.ims.config.security.CustomUserDetails;
+import com.kuro.ims.entity.User;
 import java.util.Optional;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,13 +17,13 @@ public class JpaAuditingConfig
 {
 
     @Bean
-    public AuditorAware<Long> auditorAware()
+    public AuditorAware<User> auditorAware()
     {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext())
             .map(SecurityContext::getAuthentication)
             .filter(Authentication::isAuthenticated)
             .map(Authentication::getPrincipal)
             .map(CustomUserDetails.class::cast)
-            .map(CustomUserDetails::getId);
+            .map(CustomUserDetails::getUser);
     }
 }

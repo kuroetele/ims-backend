@@ -6,6 +6,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
@@ -24,14 +25,16 @@ public class AuditableEntity
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
+    @ManyToOne
     @CreatedBy
-    private Long createdBy;
+    private User createdBy;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @ManyToOne
     @LastModifiedBy
-    private Long lastUpdatedBy;
+    private User lastUpdatedBy;
 
     @LastModifiedDate
     private LocalDateTime lastUpdatedAt;
