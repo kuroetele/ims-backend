@@ -1,5 +1,6 @@
 package com.kuro.ims.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;
@@ -32,6 +33,7 @@ public class AuditableEntity
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @ManyToOne
     @LastModifiedBy
     private User lastUpdatedBy;

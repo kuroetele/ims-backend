@@ -15,6 +15,6 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
     @Query("select sum(o.grossAmount) as amount, year(o.createdAt) as year from Order o group by year")
     List<Map<BigDecimal, String>> findYearlySalesSum();
 
-    @Query("select sum(o.grossAmount) as amount, year(o.createdAt) as year from Order o  where o.createdBy =:userId group by year")
+    @Query("select sum(o.grossAmount) as amount, year(o.createdAt) as year from Order o  where o.createdBy.id =:userId group by year")
     List<Map<BigDecimal, String>> findYearlySalesSumForUser(Long userId);
 }
