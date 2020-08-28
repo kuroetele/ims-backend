@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -47,7 +48,7 @@ public class Product extends AuditableEntity
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-    @Positive(message = "min quantity must be greater than 0")
+    @Min(value = 0, message = "min quantity cannot be less than 0")
     private Long minQuantity;
 
     @Positive(message = "max quantity must be greater than 0")
