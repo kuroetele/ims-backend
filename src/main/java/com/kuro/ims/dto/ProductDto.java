@@ -39,5 +39,7 @@ public class ProductDto
     @Positive(message = "max quantity must be greater than 0")
     private Long maxQuantity;
 
+    private boolean deleted;
+
     private String image;
 }
