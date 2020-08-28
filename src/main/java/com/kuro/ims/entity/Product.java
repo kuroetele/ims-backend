@@ -33,7 +33,7 @@ public class Product extends AuditableEntity
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long categoryId;
 
-    @Positive(message = "available quantity must be greater than 0")
+    @Min(value = 0, message = "available quantity cannot be less than 0")
     private Long availableQuantity;
 
     @Positive(message = "cost price must be greater than 0")
